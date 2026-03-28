@@ -11,15 +11,44 @@ from app.routers import pdf, texts
 # Cria as tabelas no banco automaticamente ao iniciar a aplicação
 Base.metadata.create_all(bind=engine)
 
+description = """
+## Sobre
+
+API para upload e gerenciamento de textos extraídos de arquivos PDF.
+
+## Como usar
+
+1. Crie um usuário em `/auth/register`
+2. Faça login em `/auth/token` e copie o token
+3. Clique em **Authorize** e cole o token
+4. Utilize os endpoints de PDF e Texts
+
+## Endpoints disponíveis
+
+- **Auth** — Cadastro e login de usuários
+- **PDF** — Upload e extração de texto de arquivos PDF
+- **Texts** — Gerenciamento dos textos extraídos (CRUD completo)
+"""
+
 # Inicializa a aplicação com as informações que aparecem no Swagger
 app = FastAPI(
     title="PDF API",
-    description="API para extracao e gerenciamento de texto de arquivos PDF",
-    version="1.0.0"
+    description=description,
+    version="1.0.0",
+    contact={
+        "name": "Lucas Viana",
+        "url": "https://github.com/Viana0610/pdf-api",
+    }
 )
 
 # Endpoint para cadastrar um novo usuário
-@app.post("/auth/register", response_model=UserResponse, tags=["Auth"])
+@app.post(
+    "/auth/register",
+    response_model=UserResponse,
+    tags=["Auth"],
+    summary="Cadastrar usuário",
+    description="Cria um novo usuário com username e senha. A senha é armazenada com hash bcrypt."
+)
 def register(user_data: UserCreate, db: Session = Depends(get_db)):
     # Verifica se o username já está cadastrado
     existing = get_user(db, user_data.username)
@@ -37,7 +66,13 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
     return user
 
 # Endpoint de login que retorna o token JWT
-@app.post("/auth/token", response_model=Token, tags=["Auth"])
+@app.post(
+    "/auth/token",
+    response_model=Token,
+    tags=["Auth"],
+    summary="Login",
+    description="Autentica o usuário e retorna um token JWT válido por 30 minutos."
+)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     # Valida as credenciais no banco
     user = authenticate_user(db, form_data.username, form_data.password)
@@ -60,6 +95,6 @@ app.include_router(pdf.router)
 app.include_router(texts.router)
 
 # Rota raiz para verificar se a API está no ar
-@app.get("/", tags=["Root"])
+@app.get("/", tags=["Root"], summary="Status da API", description="Verifica se a API está funcionando.")
 def root():
     return {"message": "PDF API funcionando!"}

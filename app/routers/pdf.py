@@ -8,11 +8,16 @@ from app.auth import get_current_user
 
 router = APIRouter(prefix="/pdf", tags=["PDF"])
 
-@router.post("/upload", response_model=ExtractedTextResponse)
+@router.post(
+    "/upload",
+    response_model=ExtractedTextResponse,
+    summary="Upload de PDF",
+    description="Recebe um arquivo PDF, extrai o texto de todas as páginas e salva no banco de dados."
+)
 async def upload_pdf(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user=Depends(get_current_user)  # Exige autenticação
+    current_user=Depends(get_current_user)
 ):
     # Valida se o arquivo enviado é realmente um PDF pelo MIME type
     if file.content_type != "application/pdf":
@@ -31,7 +36,7 @@ async def upload_pdf(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao processar PDF: {str(e)}")
 
-    # Rejeita PDFs que não contém texto (ex: PDFs escaneados sem OCR)
+    # Rejeita PDFs que não contém texto
     if not text.strip():
         raise HTTPException(status_code=400, detail="Nenhum texto encontrado no PDF")
 
