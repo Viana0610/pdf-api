@@ -20,8 +20,8 @@ A proposta é simples: enviar um arquivo PDF, extrair o texto dele e poder geren
 
 **1. Clone o repositório e entre na pasta**
 ```bash
-git clone 
-cd pdf_api
+git clone https://github.com/Viana0610/pdf-api.git
+cd pdf-api
 ```
 
 **2. Crie o ambiente virtual e ative**
@@ -47,16 +47,19 @@ Acesse em `http://127.0.0.1:8000/docs`
 ## Como usar
 
 ### Autenticação
-Todos os endpoints são protegidos. Para acessar, primeiro gere um token em `POST /auth/token` com:
-- **username:** admin
-- **password:** admin123
 
-No Swagger, clique em **Authorize** e cole o token.
+Todos os endpoints são protegidos. Para acessar:
+
+1. Crie um usuário em `POST /auth/register`
+2. Faça login em `POST /auth/token` com seu usuário e senha
+3. Copie o `access_token` retornado
+4. Clique em **Authorize** no Swagger e cole o token
 
 ### Endpoints disponíveis
 
 | Método | Rota | O que faz |
 |--------|------|-----------|
+| POST | `/auth/register` | Cadastra um novo usuário |
 | POST | `/auth/token` | Gera o token de acesso |
 | POST | `/pdf/upload` | Envia um PDF e extrai o texto |
 | GET | `/texts/` | Lista todos os registros |
@@ -70,4 +73,3 @@ No Swagger, clique em **Authorize** e cole o token.
 
 - O banco de dados é criado automaticamente ao rodar a aplicação
 - A documentação interativa fica disponível pelo próprio Swagger em `/docs`
-- Por se tratar de um projeto de estudo, o usuário de autenticação é fixo
