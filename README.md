@@ -52,8 +52,7 @@ Todos os endpoints são protegidos. Para acessar:
 
 1. Crie um usuário em `POST /auth/register`
 2. Faça login em `POST /auth/token` com seu usuário e senha
-3. Copie o `access_token` retornado
-4. Clique em **Authorize** no Swagger e cole o token
+3. Clique em **Authorize** no Swagger e preencha usuário e senha
 
 ### Endpoints disponíveis
 
