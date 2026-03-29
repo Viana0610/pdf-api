@@ -9,9 +9,11 @@ from app.database import get_db
 from app.models import User
 from app.schemas import TokenData
 
-# Senha usada para assinar o token JWT
-SECRET_KEY = "sua-chave-secreta-troque-em-producao"
+# Secret key usada para assinar e validar o token JWT
+SECRET_KEY = "sua-senha-salve-e-mude-depois"
+# Algoritmo de criptografia usado para gerar o token
 ALGORITHM = "HS256"
+# Tempo de expiração do token em minutos
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 # Contexto de criptografia usando bcrypt para hash de senhas
