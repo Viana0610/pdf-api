@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -9,12 +9,18 @@ from app.database import get_db
 from app.models import User
 from app.schemas import TokenData
 
-# Secret key usada para assinar e validar o token JWT
-SECRET_KEY = "sua-senha-salve-e-mude-depois"
+# Secret key usada para assinar e validar o token JWT (deve ser trocada em produção)
+SECRET_KEY = "sua-chave-secreta-troque-em-producao"
+
 # Algoritmo de criptografia usado para gerar o token
 ALGORITHM = "HS256"
+
 # Tempo de expiração do token em minutos
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+# Fuso horário de Brasília (UTC-3)
+def brasilia_now():
+    return datetime.now(timezone(timedelta(hours=-3))).replace(tzinfo=None)
 
 # Contexto de criptografia usando bcrypt para hash de senhas
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -46,7 +52,7 @@ def authenticate_user(db: Session, username: str, password: str) -> Optional[Use
 # Gera o token JWT com tempo de expiração
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
-    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=15))
+    expire = brasilia_now() + (expires_delta or timedelta(minutes=15))
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
