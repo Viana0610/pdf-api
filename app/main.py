@@ -90,7 +90,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     )
     return {"access_token": access_token, "token_type": "bearer"}
 
-# Registra os roteadores de PDF e CRUD de textos
+# Registra os routers de PDF e CRUD de textos
 app.include_router(pdf.router)
 app.include_router(texts.router)
 
