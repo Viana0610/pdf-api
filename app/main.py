@@ -53,7 +53,7 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
     # Verifica se o username já está cadastrado
     existing = get_user(db, user_data.username)
     if existing:
-        raise HTTPException(status_code=400, detail="Username ja cadastrado")
+        raise HTTPException(status_code=400, detail="Username já cadastrado")
 
     # Salva o usuário com a senha criptografada
     user = User(
@@ -79,7 +79,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Usuario ou senha incorretos",
+            detail="Usuário ou senha incorretos",
             headers={"WWW-Authenticate": "Bearer"},
         )
 

@@ -16,7 +16,7 @@ SECRET_KEY = "sua-chave-secreta-troque-em-producao"
 ALGORITHM = "HS256"
 
 # Tempo de expiração do token em minutos
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 120
 
 # Fuso horário de Brasília (UTC-3)
 def brasilia_now():
