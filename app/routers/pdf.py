@@ -6,7 +6,7 @@ from app.models import ExtractedText
 from app.schemas import ExtractedTextResponse
 from app.auth import get_current_user
 
-# Router responsavel pelos endpoints de PDF
+# Router responsável pelos endpoints de PDF
 # prefix="/pdf" adiciona /pdf automaticamente em todas as rotas
 # tags=["PDF"] agrupa os endpoints na categoria PDF no Swagger
 router = APIRouter(prefix="/pdf", tags=["PDF"])
